@@ -8,3 +8,5 @@ torchvision
 jupytext
 ipywidgets
 albumentations
+pytorch
+collections

@@ -73,7 +73,7 @@ class NestedUNet(nn.Module):
         self.pool = nn.MaxPool2d(2, 2) # down-sampling
         self.up = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True) # up-sampling
 
-        self.conv0_0 = VGGBlock(input_channels, nb_filter[0], nb_filter[0])
+        self.conv0_0 = VGGBlock(self.input_channels, nb_filter[0], nb_filter[0])
         self.conv1_0 = VGGBlock(nb_filter[0], nb_filter[1], nb_filter[1])
         self.conv2_0 = VGGBlock(nb_filter[1], nb_filter[2], nb_filter[2])
         self.conv3_0 = VGGBlock(nb_filter[2], nb_filter[3], nb_filter[3])
