@@ -1,7 +1,0 @@
-The files are too heavy to be uploaded here. What I did in my computer was to download the files from the drive to my computer.
-
-Then, there is a folder called "data" with the folders/files:
-- augmented (folder)    # where data augmented numpys are saved
-- images (folder)       # original images
-- masks (folder)        # original masks
-- kavsir_bboxes.json     # original boxes file
