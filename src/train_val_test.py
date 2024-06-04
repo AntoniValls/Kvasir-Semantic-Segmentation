@@ -16,6 +16,7 @@
 import torch
 from src.utils import iou_score, dice_coef, AverageMeter
 from collections import OrderedDict
+import numpy as np
 from tqdm import tqdm
 
 # Training phase
@@ -30,6 +31,7 @@ def train(config, model, iterator, criterion, optimizer, deep_supervision=False,
         
     for input,target in iterator:
         input = input.to(device)
+        target = target.float()
         target = target.to(device)
 
         # Deep supervision application
@@ -40,6 +42,8 @@ def train(config, model, iterator, criterion, optimizer, deep_supervision=False,
                 loss += criterion(output,target)
             loss /= len(outputs)
             iou = iou_score(outputs[-1],target)
+            dice_score = dice_coef(outputs[-1],target)
+            
         else:
             output = model(input)
             loss = criterion(output,target)
@@ -89,6 +93,7 @@ def evaluate(config, model, iterator, criterion, deep_supervision=False, device=
         
         for input, target in iterator:
             input = input.to(device)
+            target = target.float()
             target = target.to(device)
 
             # Deep supervision application
@@ -99,6 +104,7 @@ def evaluate(config, model, iterator, criterion, deep_supervision=False, device=
                     loss += criterion(output, target)
                 loss /= len(outputs)
                 iou = iou_score(outputs[-1], target)
+                dice_score = dice_coef(outputs[-1],target)
             else:
                 output = model(input)
                 loss = criterion(output, target)
