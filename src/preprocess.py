@@ -19,6 +19,7 @@ import json
 from PIL import Image
 import numpy as np
 from torch.utils.data import Dataset
+import torchvision.transforms as transforms
 
 
 
@@ -43,6 +44,9 @@ class KvasirDataset(Dataset):
     def __getitem__(self, idx):
         image = self.images[idx]
         mask = self.masks[idx]
+
+        # Convert mask values from 255 to 1
+        mask = (mask / 255).astype(np.float32)
 
         if self.transforms:
             image = self.transforms(image)

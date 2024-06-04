@@ -16,14 +16,15 @@
 # +
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
-class BCEDiceLoss(nn.Module):
+class BCEDiceLoss(nn.Module): # not working well (negative values)
     
     def __init__(self):
         super().__init__()
     
     def forward(self,input,target):
-        bce = F.binary_cross_entropy_with_logits(input,target)
+        bce = F.binary_cross_entropy_with_logits(input,target) 
         smooth = 1e-5
         input = torch.sigmoid(input)
         num = target.size(0)
@@ -33,3 +34,27 @@ class BCEDiceLoss(nn.Module):
         dice = (2. * intersection.sum(1) + smooth) / (input.sum(1) + target.sum(1) + smooth)
         dice = 1 - dice.sum() / num
         return (0.5 * bce + dice)
+        
+class DiceLoss(nn.Module):
+
+    def __init__(self):
+        super().__init__()
+    
+    def forward(self, input, target):
+        smooth = 1e-5
+        
+        # Flatten the input and target tensors
+        input = input.view(-1)
+        target = target.view(-1)
+        
+        # Apply sigmoid activation to the input tensor
+        input = torch.sigmoid(input)
+        
+        # Compute the Dice coefficient
+        intersection = (input * target).sum()
+        dice = (2. * intersection + smooth) / (input.sum() + target.sum() + smooth)
+        
+        # Compute the Dice loss
+        dice_loss = 1 - dice
+        
+        return dice_loss

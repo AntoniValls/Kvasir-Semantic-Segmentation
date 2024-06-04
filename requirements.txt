@@ -95,3 +95,5 @@ tqdm
 matplotlib
 torch
 jupytext
+torchvision
+scikit-learn
