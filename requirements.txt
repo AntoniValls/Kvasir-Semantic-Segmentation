@@ -1,0 +1,11 @@
+jupyterlab
+torch
+numpy
+albumentations
+pandas
+tqdm
+matplotlib
+torch
+jupytext
+torchvision
+scikit-learn
