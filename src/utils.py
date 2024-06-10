@@ -17,7 +17,7 @@
 import torch
 
 # Dice coeficient an IoU score
-def iou_score(output, target):
+def iou_score_old(output, target):
     smooth = 1e-5
 
     if torch.is_tensor(output):
@@ -28,6 +28,17 @@ def iou_score(output, target):
     target_ = target > 0.5
     intersection = (output_ & target_).sum()
     union = (output_ | target_).sum()
+
+    return (intersection + smooth) / (union + smooth)
+
+def iou_score(output, target):
+
+    smooth = 1e-5
+    output = torch.sigmoid(output).view(-1).data.cpu().numpy()
+    target = target.view(-1).data.cpu().numpy()
+
+    intersection = (output * target).sum()
+    union = output.sum() + target.sum() - intersection
 
     return (intersection + smooth) / (union + smooth)
 
