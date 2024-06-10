@@ -44,7 +44,7 @@ class VGGBlock(nn.Module):
         self.bn1 = nn.BatchNorm2d(middle_channels)
         self.conv2 = nn.Conv2d(middle_channels, out_channels, 3, padding=1)
         self.bn2 = nn.BatchNorm2d(out_channels)
-        #self.SE = Squeeze_Excite(out_channels,8) # not sure for what this work? -> Stabilitzation?
+        self.SE = Squeeze_Excite(out_channels,8) # not sure for what this work? -> Stabilitzation?
     
     def forward(self,x):
         out = self.conv1(x)
@@ -54,7 +54,7 @@ class VGGBlock(nn.Module):
         out = self.conv2(out)
         out = self.bn2(out)
         out = self.relu(out)
-        #out = self.SE(out)
+        out = self.SE(out)
         
         return(out)
 

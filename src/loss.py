@@ -58,3 +58,25 @@ class DiceLoss(nn.Module):
         dice_loss = 1 - dice
         
         return dice_loss
+
+class IoULoss(nn.Module):
+    def __init__(self):
+        super(IoULoss, self).__init__()
+    
+    def forward(self, input, target):
+        smooth = 1e-5
+
+        # Apply sigmoid to get probabilities if not already done
+        if input.dtype != torch.float:
+            input = torch.sigmoid(input)
+
+        # Flatten the tensors
+        input = input.view(-1)
+        target = target.view(-1)
+
+        intersection = (input * target).sum()
+        union = input.sum() + target.sum() - intersection
+
+        iou = (intersection + smooth) / (union + smooth)
+        iou_loss = 1 - iou
+        return iou_loss
