@@ -24,6 +24,11 @@ class BCEDiceLoss(nn.Module): # not working well (negative values)
         super().__init__()
     
     def forward(self,input,target):
+        # Permute target to match input's shape if needed
+        if target.size() != input.size():
+        # Permute target from [batch_size, height, width, channels] to [batch_size, channels, height, width]
+            target = target.permute(0, 3, 1, 2)
+            
         bce = F.binary_cross_entropy_with_logits(input,target) 
         smooth = 1e-5
         input = torch.sigmoid(input)

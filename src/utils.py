@@ -52,6 +52,27 @@ def dice_coef(output, target):
 
     return (2. * intersection + smooth) / (output.sum() + target.sum() + smooth)
 
+def pixel_accuracy(output, target):
+    
+    # Apply sigmoid to get probabilities and then threshold at 0.5 to get binary predictions
+    output = torch.sigmoid(output)  # Convert logits to probabilities
+    output = (output > 0.5).float() # Convert probabilities to binary (0 or 1)
+    
+    # Flatten the tensors to make them 1-dimensional arrays
+    output = output.view(-1).data.cpu().numpy()
+    target = target.view(-1).data.cpu().numpy()
+    
+    # Calculate the number of correct predictions
+    correct = (output == target).sum()
+    
+    # Calculate the total number of pixels
+    total = target.size
+    
+    # Calculate pixel accuracy
+    pixel_accuracy = correct / total
+    
+    return pixel_accuracy
+    
 class AverageMeter(object):
     
     def __init__(self):
