@@ -46,6 +46,7 @@ class DiceLoss(nn.Module):
         super().__init__()
     
     def forward(self, input, target):
+
         smooth = 1e-5
         
         # Flatten the input and target tensors
