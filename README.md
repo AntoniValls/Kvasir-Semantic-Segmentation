@@ -16,9 +16,10 @@ Additionally, the final project includes benchmark models such as U-Net and ResU
 ## Results
 
 Our experiments demonstrate that UNet++ with augmented data and deep supervision outperforms all other models.
-![comparativeresults](https://github.com/user-attachments/assets/bc58f9f7-c0bd-4c1a-ae13-debceee9d0f8)
 
-![imagen](https://github.com/user-attachments/assets/2035d792-8973-4d73-88ee-955f176cbe45)
+<img src="https://github.com/user-attachments/assets/bc58f9f7-c0bd-4c1a-ae13-debceee9d0f8" alt="Comparison of Results" width="400"/>
+
+<img src="https://github.com/user-attachments/assets/2035d792-8973-4d73-88ee-955f176cbe45" alt="Result Image" width="400"/>
 
 ## Additional Resources
 
