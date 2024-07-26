@@ -145,29 +145,6 @@ def output_block():
 
 # Attention Net
 
-def init_weights(net, init_type='normal', gain=0.02):
-    def init_func(m):
-        classname = m.__class__.__name__
-        if hasattr(m, 'weight') and (classname.find('Conv') != -1 or classname.find('Linear') != -1):
-            if init_type == 'normal':
-                init.normal_(m.weight.data, 0.0, gain)
-            elif init_type == 'xavier':
-                init.xavier_normal_(m.weight.data, gain=gain)
-            elif init_type == 'kaiming':
-                init.kaiming_normal_(m.weight.data, a=0, mode='fan_in')
-            elif init_type == 'orthogonal':
-                init.orthogonal_(m.weight.data, gain=gain)
-            else:
-                raise NotImplementedError('initialization method [%s] is not implemented' % init_type)
-            if hasattr(m, 'bias') and m.bias is not None:
-                init.constant_(m.bias.data, 0.0)
-        elif classname.find('BatchNorm2d') != -1:
-            init.normal_(m.weight.data, 1.0, gain)
-            init.constant_(m.bias.data, 0.0)
-
-    print('initialize network with %s' % init_type)
-    net.apply(init_func)
-
 class conv_block(nn.Module):
     def __init__(self,ch_in,ch_out):
         super(conv_block,self).__init__()
@@ -258,11 +235,11 @@ class AttU_Net(nn.Module):
         self.Conv2 = conv_block(nb_filter[0],nb_filter[1])
         self.Conv3 = conv_block(nb_filter[1],nb_filter[2])
         self.Conv4 = conv_block(nb_filter[2],nb_filter[3])
-        self.Conv5 = conv_block(nb_filter[3],nb_filter[4])
+        # self.Conv5 = conv_block(nb_filter[3],nb_filter[4])
 
-        self.Up5 = up_conv(nb_filter[4],ch_out=nb_filter[3])
-        self.Att5 = Attention_block(F_g=nb_filter[3],F_l=nb_filter[3],F_int=nb_filter[2])
-        self.Up_conv5 = conv_block(ch_in=nb_filter[4], ch_out=nb_filter[3])
+        # self.Up5 = up_conv(nb_filter[4],ch_out=nb_filter[3])
+        # self.Att5 = Attention_block(F_g=nb_filter[3],F_l=nb_filter[3],F_int=nb_filter[2])
+        # self.Up_conv5 = conv_block(ch_in=nb_filter[4], ch_out=nb_filter[3])
 
         self.Up4 = up_conv(ch_in=nb_filter[3],ch_out=nb_filter[2])
         self.Att4 = Attention_block(F_g=nb_filter[2],F_l=nb_filter[2],F_int=nb_filter[1])
@@ -292,16 +269,16 @@ class AttU_Net(nn.Module):
         x4 = self.Maxpool(x3)
         x4 = self.Conv4(x4)
 
-        x5 = self.Maxpool(x4)
-        x5 = self.Conv5(x5)
+        # x5 = self.Maxpool(x4)
+        # x5 = self.Conv5(x5)
 
-        #decoding + concat path
-        d5 = self.Up5(x5)
-        x4 = self.Att5(g=d5,x=x4)
-        d5 = torch.cat((x4,d5),dim=1)        
-        d5 = self.Up_conv5(d5)
+        # #decoding + concat path
+        # d5 = self.Up5(x5)
+        # x4 = self.Att5(g=d5,x=x4)
+        # d5 = torch.cat((x4,d5),dim=1)        
+        # d5 = self.Up_conv5(d5)
         
-        d4 = self.Up4(d5)
+        d4 = self.Up4(x4)
         x3 = self.Att4(g=d4,x=x3)
         d4 = torch.cat((x3,d4),dim=1)
         d4 = self.Up_conv4(d4)

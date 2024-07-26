@@ -4,4 +4,7 @@ data/*
 */.ipynb_checkpoits/*
 .venv/
 */__pycache__/*
-
+models/*
+kvasir_backup.tar.gz
+bfg.jar
+results/*

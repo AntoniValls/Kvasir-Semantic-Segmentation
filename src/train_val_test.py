@@ -147,3 +147,24 @@ def evaluate(config, model, iterator, criterion, deep_supervision=False, device=
         ('accuracy', avg_meters['accuracy'].avg)
     ])
 
+def predict(model, iterator, deep_supervision=False, device="cpu"):
+    output_array = []
+    # Switch to evaluate mode
+    model.eval()
+
+    # Do not compute the gradients
+    with torch.no_grad():
+        
+        for input, target in iterator:
+            input = input.to(device)
+
+            # Deep supervision application
+            if deep_supervision:
+                outputs = model(input)
+                output_array.append(outputs[-1:])
+            else:
+                output = model(input)
+                output_array.append(output)
+
+
+    return output_array
