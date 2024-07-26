@@ -25,7 +25,7 @@ Our experiments demonstrate that UNet++ with augmented data and deep supervision
 
 This repository also includes:
 
-* The final project report
-* Presentation slides
+* The final project [report](./ProjectReport.pdf).
+* Presentation [slides](./ProjectPresentation.pdf).
 
 We achieved a grade of 29/30 for this project!
